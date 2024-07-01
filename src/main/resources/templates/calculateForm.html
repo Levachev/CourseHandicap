@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>calculate</title>
+</head>
+<body>
+<p id="resultP" style="color:green;">here will be the answer</p>
+<table>
+    <tr>
+        <td><label for="uHandicapIndex">input handicap index: </label></td>
+        <td><input
+                type="number"
+                id="uHandicapIndex"
+                name="handicapIndex"
+                step=".1" /></td>
+    </tr>
+    <tr>
+        <td><label for="uCourseRating">input course rating: </label></td>
+        <td><input
+                type="number"
+                id="uCourseRating"
+                name="courseRating"
+                step=".1" /></td>
+    </tr>
+    <tr>
+        <td><label for="uSlopeRating">input slope rating: </label></td>
+        <td><input
+                type="number"
+                id="uSlopeRating"
+                name="slopeRating" /></td>
+    </tr>
+    <tr>
+        <td><label for="uPar">input par: </label></td>
+        <td><input
+                type="number"
+                id="uPar"
+                name="par" /></td>
+    </tr>
+</table>
+<div style="padding:10px 0px 10px 0px;">
+    <button id="calculateButton" class="float-left submit-button" >calculate course handicap</button>
+</div>
+
+<script type="text/javascript">
+    document.getElementById("calculateButton").onclick = function () {
+        handicapIndexValue=document.getElementById("uHandicapIndex").value;
+        courseRatingValue=document.getElementById("uCourseRating").value;
+        slopeRatingValue=document.getElementById("uSlopeRating").value;
+        parValue=document.getElementById("uPar").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/calc/handicap/result", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            handicapIndex: handicapIndexValue,
+            courseRating: courseRatingValue,
+            slopeRating: slopeRatingValue,
+            par: parValue
+         }));
+
+        xhr.onload = function() {
+            var data = JSON.parse(this.responseText);
+            console.log(data.status);
+            if (data.status==400) {
+                document.getElementById("resultP").innerHTML = "bad input data. We have rules:<br />"
+                +"&emsp;handicap index should be between 1 and 55<br />"
+                +"&emsp;course rating should be between 20 and 90<br />"
+                +"&emsp;slope rating should be between 55 and 155<br />"
+                +"&emsp;par should be between 20 and 90<br />";
+            } else{
+                document.getElementById("resultP").innerHTML = "course handicap: "+data.value;
+            }
+            console.log(data);
+        };
+    };
+</script>
+</body>
+</html>
