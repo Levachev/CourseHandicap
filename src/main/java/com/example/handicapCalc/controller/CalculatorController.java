@@ -16,12 +16,12 @@ public class CalculatorController {
     @Qualifier("defaultCalculator")
     private CalculatorService service;
 
-    @PostMapping("/handicap/result")
+    @PostMapping("/course/handicap/result")
     public CourseHandicap calculateCourseHandicap(@Valid @RequestBody CourseHandicapCalculatorParams params){
         return service.calculateCourseHandicap(params);
     }
 
-    @GetMapping("/handicap")
+    @GetMapping("/course/handicap")
     public ModelAndView getCourseHandicapForm(){
         return new ModelAndView("calculateForm.html");
     }
