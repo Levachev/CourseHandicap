@@ -10,7 +10,7 @@ import java.util.function.Function;
 public class AppConfig {
     @Bean
     Function<CourseHandicapCalculatorParams, Double> courseHandicapFormula(){
-        return (params -> params.getHandicapIndex() * ((double)params.getSlopeRating() / 113d)
-                + (params.getCourseRating() - (double)params.getPar()));
+        return (params -> Math.abs(params.getHandicapIndex() * ((double)params.getSlopeRating() / 113d)
+                + (params.getCourseRating() - (double)params.getPar())));
     }
 }
